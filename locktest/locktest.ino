@@ -17,6 +17,8 @@ int toiletswitchon = 0;
  byte readbackblock[18];  
 String rfidUid = "";
 int sameRfidCount = 0;
+int sameLockCount = 0;
+int sameIRCount = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -73,15 +75,19 @@ void testRfid(){
 
 void testLock(){
   
-  if(switchon != digitalRead(inputpin)){
+  if(switchon != digitalRead(inputpin) && sameLockCount>=3){
       if (digitalRead(inputpin) == 0){
          Serial.println("Lock:open");
         }
       else{
          Serial.println("Lock:close");
         }
-       
+       sameLockCount =0;
        switchon = !switchon;
+    }
+  else{
+    sameLockCount ++;
+    if(sameLockCount >= 300) sameLockCount =3;
     }
   
   
@@ -89,15 +95,19 @@ void testLock(){
 
 void testToilet(){
    
-  if(toiletswitchon != digitalRead(toiletinputpin)){
+  if(toiletswitchon != digitalRead(toiletinputpin) && sameIRCount>=3){
       if (digitalRead(toiletinputpin) == 0){
          Serial.println("Toilet:in");
         }
       else{
          Serial.println("Toilet:out");
         }
-       
+       sameIRCount = 0;
        toiletswitchon = !toiletswitchon;
+    }
+  else{
+    sameIRCount ++;
+    if(sameIRCount >= 300) sameIRCount =3;
     }
   
   }
