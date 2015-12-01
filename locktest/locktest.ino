@@ -75,7 +75,7 @@ void testRfid(){
 
 void testLock(){
   
-  if(switchon != digitalRead(inputpin) && sameLockCount>=3){
+  if(switchon != digitalRead(inputpin) && sameLockCount>=5){
       if (digitalRead(inputpin) == 0){
          Serial.println("Lock:open");
         }
@@ -87,7 +87,7 @@ void testLock(){
     }
   else{
     sameLockCount ++;
-    if(sameLockCount >= 300) sameLockCount =3;
+    if(sameLockCount >= 300) sameLockCount =6;
     }
   
   
@@ -95,7 +95,7 @@ void testLock(){
 
 void testToilet(){
    
-  if(toiletswitchon != digitalRead(toiletinputpin) && sameIRCount>=3){
+  if(toiletswitchon != digitalRead(toiletinputpin) && sameIRCount>=5){
       if (digitalRead(toiletinputpin) == 0){
          Serial.println("Toilet:in");
         }
@@ -107,7 +107,7 @@ void testToilet(){
     }
   else{
     sameIRCount ++;
-    if(sameIRCount >= 300) sameIRCount =3;
+    if(sameIRCount >= 300) sameIRCount =6;
     }
   
   }
