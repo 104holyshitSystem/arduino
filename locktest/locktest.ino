@@ -5,6 +5,11 @@ int switchon = 0;
 //toilet use
 int toiletinputpin = 19;
 int toiletswitchon = 0;
+//rf hot use
+int rfhotinputpin = 2;
+int rfhotoutputpin = 4;
+int rfhotswitch=0;
+
 //rfid use
 #include <SPI.h>
 #include <MFRC522.h>
@@ -28,6 +33,9 @@ void setup() {
   digitalWrite(outputpin,HIGH);
   // toiletuse
   pinMode(toiletinputpin,INPUT);
+  // rf hot sensor
+  pinMode(rfhotinputpin,INPUT);
+  pinMode(rfhotoutputpin, OUTPUT);
   // rfid use
   SPI.begin();  
    mfrc522.PCD_Init();  
@@ -44,8 +52,24 @@ void loop() {
   testRfid();
   //next
   testToilet();
+  //IF HOT LED
+  testRFHot();
+  //Serial.println(digitalRead(2));
   delay(100);
 }
+
+void testRFHot(){
+    if(digitalRead(rfhotinputpin) && rfhotswitch==0){
+      rfhotswitch =1;
+      digitalWrite(rfhotoutputpin,rfhotswitch);
+      Serial.println("Bath:in");
+    }
+   if(!digitalRead(rfhotinputpin)){
+      rfhotswitch =0;
+      digitalWrite(rfhotoutputpin,rfhotswitch);
+    }
+  
+  }
 
 void testRfid(){
   mfrc522.PCD_Init();  
