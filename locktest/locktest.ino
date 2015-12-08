@@ -25,6 +25,9 @@ int sameRfidCount = 0;
 int sameLockCount = 0;
 int sameIRCount = 0;
 
+// b pin 
+int bpin = 3;
+
 void setup() {
   Serial.begin(9600);
   // lockuse
@@ -43,8 +46,10 @@ void setup() {
    for (byte i = 0; i < 6; i++) {  
      key.keyByte[i] = 0xFF;  
    }  
+  //bpin
+  pinMode(bpin,OUTPUT);
 }
-
+int incomingByte = 0;
 void loop() {
   // testlock
   testLock();
@@ -55,6 +60,15 @@ void loop() {
   //IF HOT LED
   testRFHot();
   //Serial.println(digitalRead(2));
+  if (Serial.available() > 0) {
+                // read the incoming byte:
+                incomingByte = Serial.read();
+                // say what you got:
+                if(incomingByte==98){
+                   bbb();
+                  }
+               
+        }
   delay(100);
 }
 
@@ -133,5 +147,18 @@ void testToilet(){
     sameIRCount ++;
     if(sameIRCount >= 300) sameIRCount =6;
     }
+  
+  }
+
+
+void bbb(){
+    for(int i = 0;i<=200;i++){
+                      delay(10);
+                      analogWrite(bpin,i);
+                    }
+                    for(int i = 200;i>=0;i--){
+                      delay(10);
+                      analogWrite(bpin,i);
+                    }
   
   }
