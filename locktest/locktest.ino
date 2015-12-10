@@ -1,5 +1,6 @@
+#include <IRremote.h>
 //toilet id
-String toiletid = "7F";
+String toiletid = "2";
 
 //lockuse
 int outputpin = 8;
@@ -12,6 +13,14 @@ int toiletswitchon = 0;
 int rfhotinputpin = 2;
 int rfhotoutputpin = 4;
 int rfhotswitch=0;
+
+//rf remote
+int recv_pin = 6;
+IRrecv irrecv(recv_pin);
+decode_results results;
+float sinVal;
+int toneVal;
+
 
 
 //rfid use
@@ -52,6 +61,10 @@ void setup() {
    }  
   //bpin
   pinMode(bpin,OUTPUT);
+
+  //rf remote
+  irrecv.enableIRIn();
+  pinMode(5,OUTPUT);
 }
 int incomingByte = 0;
 void loop() {
@@ -73,6 +86,11 @@ void loop() {
                   }
                
         }
+
+
+callb();
+
+  
   delay(100);
 }
 
@@ -166,3 +184,46 @@ void bbb(){
                     }
   
   }
+
+
+void callb(){
+
+    if(irrecv.decode(&results)){
+      if(results.value==0xFF18E7&&toiletid=="2"){
+  //2 0xFF18E7
+  //1 0xFF30CF
+          for(int x=0;x<180;x++){
+            sinVal = (sin(x*(3.1412/180)));
+            toneVal = 2000+(int(sinVal*1000));
+            //Serial.println(toneVal);
+            newtone(5,toneVal,10);
+            delay(2);
+            }
+        }
+      if(results.value==0xFF30CF&&toiletid=="1"){
+  //2 0xFF18E7
+  //1 0xFF30CF
+          for(int x=0;x<180;x++){
+            sinVal = (sin(x*(3.1412/180)));
+            toneVal = 2000+(int(sinVal*1000));
+            //Serial.println(toneVal);
+            newtone(5,toneVal,10);
+            delay(2);
+            }
+        }
+    irrecv.resume();
+    }
+  
+  
+  }
+
+void newtone(byte tonePin, int frequency, int duration) {
+int period = 1000000L / frequency;
+int pulse = period / 2;
+for (long i = 0; i < duration * 1000L; i += period) {
+digitalWrite(tonePin, HIGH);
+delayMicroseconds(pulse);
+digitalWrite(tonePin, LOW);
+delayMicroseconds(pulse);
+}
+}
