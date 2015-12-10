@@ -1,3 +1,6 @@
+//toilet id
+String toiletid = "7F";
+
 //lockuse
 int outputpin = 8;
 int inputpin = 7   ;
@@ -9,6 +12,7 @@ int toiletswitchon = 0;
 int rfhotinputpin = 2;
 int rfhotoutputpin = 4;
 int rfhotswitch=0;
+
 
 //rfid use
 #include <SPI.h>
@@ -76,7 +80,7 @@ void testRFHot(){
     if(digitalRead(rfhotinputpin) && rfhotswitch==0){
       rfhotswitch =1;
       digitalWrite(rfhotoutputpin,rfhotswitch);
-      Serial.println("Bath:in");
+      Serial.println("Bath:in:"+toiletid);
     }
    if(!digitalRead(rfhotinputpin)){
       rfhotswitch =0;
@@ -100,7 +104,7 @@ void testRfid(){
       rfidUid2 += String(mfrc522.uid.uidByte[i], HEX);
     }
   if(rfidUid != rfidUid2 || sameRfidCount == 3){
-      Serial.println("beep:"+rfidUid2);    
+      Serial.println("beep:"+rfidUid2+":"+toiletid);    
       rfidUid = rfidUid2;
       sameRfidCount = 0;
     }
@@ -115,10 +119,10 @@ void testLock(){
   
   if(switchon != digitalRead(inputpin) && sameLockCount>=5){
       if (digitalRead(inputpin) == 0){
-         Serial.println("Lock:open");
+         Serial.println("Lock:open:"+toiletid);
         }
       else{
-         Serial.println("Lock:close");
+         Serial.println("Lock:close:"+toiletid);
         }
        sameLockCount =0;
        switchon = !switchon;
@@ -135,10 +139,10 @@ void testToilet(){
    
   if(toiletswitchon != digitalRead(toiletinputpin) && sameIRCount>=5){
       if (digitalRead(toiletinputpin) == 0){
-         Serial.println("Toilet:in");
+         Serial.println("Toilet:in:"+toiletid);
         }
       else{
-         Serial.println("Toilet:out");
+         Serial.println("Toilet:out:"+toiletid);
         }
        sameIRCount = 0;
        toiletswitchon = !toiletswitchon;
