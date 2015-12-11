@@ -1,6 +1,6 @@
 #include <IRremote.h>
 //toilet id
-String toiletid = "2";
+String toiletid = "1";
 
 //lockuse
 int outputpin = 8;
@@ -190,23 +190,25 @@ void callb(){
 
     if(irrecv.decode(&results)){
       if(results.value==0xFF18E7&&toiletid=="2"){
+         Serial.println("Warning:on:"+toiletid);
   //2 0xFF18E7
   //1 0xFF30CF
           for(int x=0;x<180;x++){
             sinVal = (sin(x*(3.1412/180)));
             toneVal = 2000+(int(sinVal*1000));
-            //Serial.println(toneVal);
+           
             newtone(5,toneVal,10);
             delay(2);
             }
         }
       if(results.value==0xFF30CF&&toiletid=="1"){
+        Serial.println("Warning:on:"+toiletid);
   //2 0xFF18E7
   //1 0xFF30CF
           for(int x=0;x<180;x++){
             sinVal = (sin(x*(3.1412/180)));
             toneVal = 2000+(int(sinVal*1000));
-            //Serial.println(toneVal);
+            
             newtone(5,toneVal,10);
             delay(2);
             }
