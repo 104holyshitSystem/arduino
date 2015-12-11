@@ -1,6 +1,6 @@
 #include <IRremote.h>
 //toilet id
-String toiletid = "1";
+String toiletid = "2";
 
 //lockuse
 int outputpin = 8;
